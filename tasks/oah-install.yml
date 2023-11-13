@@ -31,7 +31,7 @@
 
 - name: Install RedHat Ansible
   #become: yes
-  #become_user: "{{ lookup('ansible.builtin.env', 'USER')|default('nobody', True) }}"
+  become_user: "{{ lookup('ansible.builtin.env', 'USER')|default('nobody', True) }}"
   shell: python3 -m pip install --user ansible
   when: ansible_output.rc != 0
   
