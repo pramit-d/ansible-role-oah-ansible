@@ -24,14 +24,14 @@
       when: pip_output.rc != 0
 
 - name: Checking Ansible Installation
-  #become_user: "{{ lookup('ansible.builtin.env', 'USER')|default('nobody', True) }}"
+  become_user: "{{ system_user }}"
   shell: ansible --version
   register: ansible_output
   ignore_errors: true
 
 - name: Install RedHat Ansible
-  #become: yes
-  become_user: "{{ lookup('ansible.builtin.env', 'USER')|default('nobody', True) }}"
+  become: yes
+  become_user: "{{ system_user }}"
   shell: python3 -m pip install --user ansible
   when: ansible_output.rc != 0
   
