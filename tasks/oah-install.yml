@@ -4,6 +4,7 @@
 
 - name: Update and upgrade apt packages
   become: yes
+  become_user: "{{ lookup('ansible.builtin.env', 'USER')|default('nobody', True) }}"
   apt:
     upgrade: yes
     update_cache: yes
@@ -11,7 +12,7 @@
 
 - name: Installing Ansible dependencies
   become: yes
-  #become_user: "{{ lookup('ansible.builtin.env', 'USER')|default('nobody', True) }}"
+  become_user: "{{ lookup('ansible.builtin.env', 'USER')|default('nobody', True) }}"
   block:
     - name: Checking pip Installation
       shell: python3 -m pip -V
@@ -23,12 +24,14 @@
       when: pip_output.rc != 0
 
 - name: Checking Ansible Installation
+  become_user: "{{ lookup('ansible.builtin.env', 'USER')|default('nobody', True) }}"
   shell: ansible --version
   register: ansible_output
   ignore_errors: true
 
 - name: Install RedHat Ansible
   become: yes
-  shell: python3 -m pip install -y --user ansible
+  become_user: "{{ lookup('ansible.builtin.env', 'USER')|default('nobody', True) }}"
+  shell: python3 -m pip install --user ansible
   when: ansible_output.rc != 0
   
